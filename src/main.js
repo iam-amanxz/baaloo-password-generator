@@ -8,6 +8,7 @@ let ckNumbers
 let btnGenerate
 let txtDisplay
 let sliderDisplay
+let containerDisplay
 
 async function generatePassword() {
   console.log(iptLength.value)
@@ -42,6 +43,22 @@ function applyDisabledButton() {
   }
 }
 
+function copyToClipboard() {
+  const copyText = txtDisplay.textContent
+
+  navigator.clipboard.writeText(copyText).then(
+    function () {
+      containerDisplay.classList.add('copied')
+      setTimeout(() => {
+        containerDisplay.classList.remove('copied')
+      }, 1000)
+    },
+    function (err) {
+      console.error('Async: Could not copy text: ', err)
+    },
+  )
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   iptLength = document.querySelector('#ipt-length')
   ckCapital = document.querySelector('#use-capital')
@@ -51,6 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
   btnGenerate = document.querySelector('#btn-generate')
   txtDisplay = document.querySelector('#txt-display')
   sliderDisplay = document.querySelector('#txt-slider')
+  containerDisplay = document.querySelector('#container-display')
 
   sliderDisplay.textContent = iptLength.value
 
@@ -63,4 +81,5 @@ window.addEventListener('DOMContentLoaded', () => {
   ckSpecial.addEventListener('change', applyDisabledButton)
   ckNumbers.addEventListener('change', applyDisabledButton)
   btnGenerate.addEventListener('click', generatePassword)
+  containerDisplay.addEventListener('click', copyToClipboard)
 })
